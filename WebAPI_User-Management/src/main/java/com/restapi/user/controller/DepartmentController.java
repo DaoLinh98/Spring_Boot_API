@@ -26,7 +26,7 @@ public class DepartmentController {
     public List<Department> getAll() {
         return this.departmentService.getAll();
     }
-    @GetMapping("/addAlluser")
+    @GetMapping("/withusers")
     public List<DeppartmentModel> getAllWithUser() {
         return this.departmentService.getAllWithUsers();
     }

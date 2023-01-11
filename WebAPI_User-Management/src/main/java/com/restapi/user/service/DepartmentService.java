@@ -1,6 +1,7 @@
 package com.restapi.user.service;
 
 import com.restapi.user.entity.Department;
+import com.restapi.user.entity.User;
 import com.restapi.user.model.DeppartmentModel;
 import com.restapi.user.repository.DepartmentRepository;
 import com.restapi.user.repository.UserRepository;
@@ -32,6 +33,8 @@ public class DepartmentService {
         List<DeppartmentModel> deppartmentModels = new ArrayList<DeppartmentModel>();
         for (Department department : departments) {
             DeppartmentModel deppartmentModel = new DeppartmentModel();
+            int id = deppartmentModel.id;
+            deppartmentModel.id = department.getId();
             deppartmentModel.departmentName = department.getDepartmentName();
             deppartmentModel.users = this.userRepository.findAll();
             deppartmentModels.add(deppartmentModel);
