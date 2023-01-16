@@ -4,8 +4,10 @@ import com.restapi.user.entity.User;
 
 import java.util.List;
 
-public class DeppartmentModel {
+public class AssetModel {
+
     public int id;
-    public String departmentName;
+    public String assetsName;
     public List<User> users;
+
 }

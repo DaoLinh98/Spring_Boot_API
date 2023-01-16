@@ -7,6 +7,5 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    //List<User> findByTutorialId(int postId);
-   // void deleteByTutorialId(long departmentId);
+
 }

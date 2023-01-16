@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class DepartmentService {
         List<DeppartmentModel> deppartmentModels = new ArrayList<DeppartmentModel>();
         for (Department department : departments) {
             DeppartmentModel deppartmentModel = new DeppartmentModel();
-            int id = deppartmentModel.id;
+            int id = department.getId();
             deppartmentModel.id = department.getId();
             deppartmentModel.departmentName = department.getDepartmentName();
             deppartmentModel.users = this.userRepository.findAll();
