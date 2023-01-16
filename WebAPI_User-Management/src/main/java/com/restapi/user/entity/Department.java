@@ -40,15 +40,5 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-//    @JoinColumn(name = "department_id")
-    private Set<User> users = new HashSet<User>();
 }

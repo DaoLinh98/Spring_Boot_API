@@ -79,6 +79,18 @@ public class User {
     @JoinColumn(name = "department_id",nullable = false,referencedColumnName = "department_id")
     private Department department;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     public User(String userName, String passWord, String fullName, Date dayOfBirth, Department department) {
         this.userName = userName;
         this.passWord = passWord;

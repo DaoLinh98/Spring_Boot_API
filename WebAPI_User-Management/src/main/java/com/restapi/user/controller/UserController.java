@@ -32,28 +32,24 @@ public class UserController {
         return userService.getAll();
     }
 
-//    @GetMapping("{id}")
-//
-//
-//    public User getById(@PathVariable Integer id) {
-//       return  this.userRepository.getOne(id);
-//    }
-//
+    @GetMapping("{id}")
+    public User getById(@PathVariable Integer id) {
+       return  this.userService.getById(id);
+    }
+
     @PostMapping()
         public User createUesr(@RequestBody User user) {
         return userService.createUesr(user);
     }
-//
-//
-//    @PutMapping("{id}")
-//    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
-//        User exitUser = this.userRepository.getOne(id);
-//        BeanUtils.copyProperties(user, exitUser, "id");
-//        return this.userRepository.saveAndFlush(exitUser);
-//    }
-//    @DeleteMapping("{id}")
-//    public Void deleteUser(@PathVariable Integer id) {
-//         this.userRepository.deleteById(id);
-//         return null;
-//    }
+
+
+    @PutMapping("{id}")
+    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+        return this.userService.updateUser(id, user);
+    }
+    @DeleteMapping("{id}")
+    public Void deleteUser(@PathVariable Integer id) {
+         this.userService.deleteUser(id);
+         return null;
+    }
 }
