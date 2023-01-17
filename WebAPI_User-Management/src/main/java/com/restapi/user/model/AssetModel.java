@@ -10,4 +10,5 @@ public class AssetModel {
     public String assetsName;
     public List<User> users;
 
+
 }

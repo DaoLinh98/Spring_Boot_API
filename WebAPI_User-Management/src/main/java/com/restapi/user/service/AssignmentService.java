@@ -26,10 +26,9 @@ public class AssignmentService {
     }
 
     public Assignment createAssignment(Assignment assignment) {
-
         User x = userRepository.findById(assignment.getUser().getId()).get();
         Asset y = assetRepository.findById(assignment.getUser().getId()).get();
-        Assignment t = new Assignment(assignment.getStatus(),x,y);
+        Assignment t = new Assignment(assignment.getStatus(), x, y);
         return assignmentRepository.save(t);
     }
 
