@@ -18,6 +18,7 @@ import java.util.Date;
 public class Assignment {
     @Id
     @Column(name = "assignment_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Id
@@ -34,9 +35,8 @@ public class Assignment {
 
     public Assignment(String status, User user, Asset asset) {
         this.status = status;
-        this.user = user;
-        this.asset = asset;
-
+       this.user = user;
+       this.asset = asset;
     }
 
     public int getId() {

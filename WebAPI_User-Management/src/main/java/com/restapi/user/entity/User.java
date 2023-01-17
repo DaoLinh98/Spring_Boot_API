@@ -98,4 +98,5 @@ public class User {
         this.dayOfBirth = dayOfBirth;
         this.department = department;
     }
+
 }

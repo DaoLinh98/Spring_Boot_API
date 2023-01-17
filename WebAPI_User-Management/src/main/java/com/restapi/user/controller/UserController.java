@@ -8,14 +8,19 @@ import com.restapi.user.service.UserService;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.Order;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.print.Pageable;
+import java.util.*;
+
 @RestController
 @RequestMapping("api/v1/users")
 @ToString()
@@ -25,12 +30,28 @@ public class UserController {
     private UserService userService;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping()
      public List<User> getAll() {
 
         return userService.getAll();
     }
+    @GetMapping("/sort")
+    public ResponseEntity<List<User>> getAllEmployees(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "3") Integer pageSize,
+            @RequestParam(defaultValue = "id, asc") String[] sortingParams
+
+    )
+
+    {
+        List<User> list = userService.getAllEmployees(pageNo, pageSize, sortingParams);
+
+        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
 
     @GetMapping("{id}")
     public User getById(@PathVariable Integer id) {
@@ -52,4 +73,8 @@ public class UserController {
          this.userService.deleteUser(id);
          return null;
     }
+
+
+
+
 }
