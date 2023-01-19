@@ -73,8 +73,4 @@ public class UserController {
          this.userService.deleteUser(id);
          return null;
     }
-
-
-
-
 }
