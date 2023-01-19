@@ -33,7 +33,7 @@ public class AssetService {
         AssetModel assetModel = new AssetModel();
         assetModel.id = asset.getId();
         assetModel.assetsName = asset.getAssetName();
-        assetModel.users = this.userRepository.findAll();
+        assetModel.users = userRepository.getUsersByDepartment_Id(id);
         return assetModel;
     }
     public Asset createAsset(Asset asset) {

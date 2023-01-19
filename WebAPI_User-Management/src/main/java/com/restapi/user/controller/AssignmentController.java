@@ -29,13 +29,12 @@ public class AssignmentController {
 
     @GetMapping("{id}")
     public Assignment getById(@PathVariable Integer id) {
-        return this.assignmentService.getById(id);
+        return this.assignmentService.getById(id).get();
     }
 
 
     @PostMapping()
     public Assignment createAssignment(@RequestBody Assignment assignment) {
-
         return this.assignmentService.createAssignment(assignment);
     }
 }

@@ -1,0 +1,42 @@
+
+======================== RESTFULL API WITH USER MANAGEMENT MODEL ==============
+			
+				--REPORT-01/19/2023--
+
+	**SWAGGER UI: http://localhost:8080/swagger-ui.html
+=========================
+
+	**BUILD MODEL AND RELATION:(DONE)
+		- Users
+		- Departments
+		- Assets
+		- Assignments
+		
+	**IMPLEMENT PAGING AND SORTING	(DONE)
+		- Paging to size, limit items
+		- Sort to multiple column
+		- Sort to type DESC or ASC.
+		
+	**IMPLEMENT CRUD FOR MODEL
+		- Users:
+			+ Get all									(Done)
+			+ Get by id	 								(Done)	
+			+ Get Users with total assets				(Done)
+			+ Create new   								(Done)
+			+ Edit										(Done)
+			+ Delete									(Done)
+			
+		- Departments:
+			+ Create new								(Done)
+			+ Get all department with list<User>		(Done)
+			
+		- Assets:
+			+ Create new								(Done)
+			+ Get by ID with List<User>					(Data is incorrect because Assignment has not been initialized)
+			
+		- Assignments: 
+			+ Create new 					(Issue: can not convert data type)
+			+ Get all						(Todo)
+			
+		
+==========================================================================================================		
