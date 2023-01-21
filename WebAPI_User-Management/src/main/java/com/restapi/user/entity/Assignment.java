@@ -1,12 +1,12 @@
 package com.restapi.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.restapi.user.repository.AssignmentPK;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name="assignments")
@@ -15,7 +15,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Assignment {
+public class Assignment implements Serializable {
     @Id
     @Column(name = "assignment_id")
     private int id;
@@ -32,7 +32,8 @@ public class Assignment {
     private String status;
 
 
-    public Assignment(String status, User user, Asset asset) {
+    public Assignment(int id, String status, User user, Asset asset) {
+        this.id = id;
         this.status = status;
        this.user = user;
        this.asset = asset;
@@ -68,5 +69,18 @@ public class Assignment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Assignment)) return false;
+        Assignment that = (Assignment) o;
+        return getId() == that.getId() && getAsset().equals(that.getAsset()) && getUser().equals(that.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getAsset(), getUser());
     }
 }

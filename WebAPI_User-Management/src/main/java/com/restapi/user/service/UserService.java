@@ -1,5 +1,6 @@
 package com.restapi.user.service;
 
+import com.restapi.user.dao.UserDAO;
 import com.restapi.user.entity.Department;
 import com.restapi.user.entity.User;
 import com.restapi.user.repository.DepartmentRepository;
@@ -19,57 +20,33 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
+    private UserDAO userDAO;
     public List<User> getAll() {
-        return this.userRepository.findAll();
+        return this.userDAO.getAll();
     }
 
     public User getById(int id) {
 
-        return this.userRepository.findById(id).get();
+        return this.userDAO.getById(id);
     }
 
     public User createUesr(User user) {
-        Department d = departmentRepository.findById(user.getDepartment().getId()).get();
-        User t = new User(user.getUserName(), user.getPassWord(), user.getFullName(), user.getDayOfBirth(), d);
-        return userRepository.save(t);
-    }
 
-    public UserService(UserRepository userRepository, DepartmentRepository departmentRepository) {
-        this.userRepository = userRepository;
-        this.departmentRepository = departmentRepository;
+        return this.userDAO.createUesr(user);
     }
-
     public User updateUser(int id, User user) {
-        User exitUser = this.userRepository.getOne(id);
-        BeanUtils.copyProperties(user, exitUser, "id");
-        return this.userRepository.saveAndFlush(exitUser);
+
+        return this.userDAO.updateUser(id, user);
     }
 
     public void deleteUser(int id) {
-        this.userRepository.deleteById(id);
+        this.userDAO.deleteUser(id);
     }
 
     // order by 'published' column - ascending
-    public List<User> getAllEmployees(Integer pageNo, Integer pageSize, String[] sortingParams)
-
+    public List<User> pagingAndSortUser(Integer pageNo, Integer pageSize, String[] sortingParams)
     {
-        String field = sortingParams[0];
-        String sortingDirection = sortingParams[1];
-        Sort.Direction direction = sortingDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Pageable paging = (Pageable) PageRequest.of(pageNo, pageSize,Sort.by(direction, field) );
-
-        Page<User> pagedResult = userRepository.findAll(paging);
-
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<User>();
-        }
+        return this.userDAO.pagingAndSortUser(pageNo, pageSize, sortingParams);
     }
 
 }

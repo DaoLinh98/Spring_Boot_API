@@ -39,7 +39,7 @@ public class UserController {
         return userService.getAll();
     }
     @GetMapping("/sort")
-    public ResponseEntity<List<User>> getAllEmployees(
+    public ResponseEntity<List<User>> pagingAndSortUser(
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "3") Integer pageSize,
             @RequestParam(defaultValue = "id, asc") String[] sortingParams
@@ -47,7 +47,7 @@ public class UserController {
     )
 
     {
-        List<User> list = userService.getAllEmployees(pageNo, pageSize, sortingParams);
+        List<User> list = userService.pagingAndSortUser(pageNo, pageSize, sortingParams);
 
         return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
     }

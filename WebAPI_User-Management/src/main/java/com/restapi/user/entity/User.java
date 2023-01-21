@@ -20,6 +20,35 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
+
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "user_name", nullable = false, length = 50)
+    private String userName;
+    @Column(name = "password", nullable = false, length = 50)
+    private String passWord;
+    @Column(name = "full_name", nullable = false, length = 50)
+    private String fullName;
+
+   @JsonFormat(pattern="yyyy-MM-dd")
+   @Column(name = "day_of_birth", nullable = true)
+   private Date dayOfBirth;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "department_id",nullable = false,referencedColumnName = "department_id")
+    private Department department;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -54,33 +83,6 @@ public class User {
 
     public Department getDepartment() {
         return department;
-    }
-
-    @Id
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "user_name", nullable = false, length = 50)
-    private String userName;
-    @Column(name = "password", nullable = false, length = 50)
-    private String passWord;
-    @Column(name = "full_name", nullable = false, length = 50)
-    private String fullName;
-
-   @JsonFormat(pattern="yyyy-MM-dd")
-   @Column(name = "day_of_birth", nullable = true)
-   private Date dayOfBirth;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id",nullable = false,referencedColumnName = "department_id")
-    private Department department;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setDepartment(Department department) {
