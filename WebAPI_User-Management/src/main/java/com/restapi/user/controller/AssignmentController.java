@@ -27,10 +27,10 @@ public class AssignmentController {
     private AssetRepository assetRepository;
 
 
-    @GetMapping("{id}")
-    public Assignment getById(@PathVariable Integer id) {
-        return this.assignmentService.getById(id).get();
-    }
+//    @GetMapping("{id}")
+//    public Assignment getById(@PathVariable Integer id) {
+//        return this.assignmentService.getById(id).get();
+//    }
 
 
     @PostMapping()

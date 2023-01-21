@@ -1,9 +1,5 @@
-package com.restapi.user.repository;
+package com.restapi.user.entity;
 
-import com.restapi.user.entity.Asset;
-import com.restapi.user.entity.User;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 

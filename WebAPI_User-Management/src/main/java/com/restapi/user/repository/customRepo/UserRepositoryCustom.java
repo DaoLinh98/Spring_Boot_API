@@ -1,4 +1,4 @@
-package com.restapi.user.repository;
+package com.restapi.user.repository.customRepo;
 
 import com.restapi.user.entity.User;
 
