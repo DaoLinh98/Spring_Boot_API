@@ -1,5 +1,6 @@
 package com.restapi.user.service;
 
+import com.restapi.user.dao.DepartmentDAO;
 import com.restapi.user.dao.UserDAO;
 import com.restapi.user.entity.Department;
 import com.restapi.user.model.DeppartmentModel;
@@ -15,31 +16,19 @@ public class DepartmentService {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private DepartmentDAO departmentDAO;
 
     @Autowired
     private DepartmentRepository departmentRepository;
-
     public List<Department> getAll() {
-        return this.departmentRepository.findAll();
+        return this.departmentDAO.getAll();
     }
-
     public List<DeppartmentModel> getAllWithUsers() {
-        List<Department> departments = this.departmentRepository.findAll();
-        List<DeppartmentModel> deppartmentModels = new ArrayList<DeppartmentModel>();
-
-        for (Department department : departments) {
-            DeppartmentModel deppartmentModel = new DeppartmentModel();
-            int id = department.getId();
-            deppartmentModel.id = department.getId();
-            deppartmentModel.departmentName = department.getDepartmentName();
-            deppartmentModel.users = userDAO.getUsersByDepartment_Id(id) ;
-            deppartmentModels.add(deppartmentModel);
-        }
-        return deppartmentModels;
+        return this.departmentDAO.getAllWithUsers();
     }
-
     public Department createDepartment(Department department) {
-        return this.departmentRepository.saveAndFlush(department);
+        return this.departmentDAO.createDepartment(department);
     }
 
 }

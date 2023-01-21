@@ -24,25 +24,19 @@ public class UserService {
     public List<User> getAll() {
         return this.userDAO.getAll();
     }
-
     public User getById(int id) {
-
         return this.userDAO.getById(id);
     }
-
     public User createUesr(User user) {
 
         return this.userDAO.createUesr(user);
     }
     public User updateUser(int id, User user) {
-
         return this.userDAO.updateUser(id, user);
     }
-
     public void deleteUser(int id) {
         this.userDAO.deleteUser(id);
     }
-
     // order by 'published' column - ascending
     public List<User> pagingAndSortUser(Integer pageNo, Integer pageSize, String[] sortingParams)
     {
