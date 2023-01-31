@@ -20,8 +20,6 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
     private List<User> users = new ArrayList<User>();
-
-    @Transactional
     @GetMapping()
     public List<Department> getAll() {
         return this.departmentService.getAll();

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Order;
@@ -22,6 +23,7 @@ import java.awt.print.Pageable;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/users")
 @ToString()
 
@@ -54,6 +56,7 @@ public class UserController {
 
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MODERATOR') ")
     public User getById(@PathVariable Integer id) {
        return  this.userService.getById(id);
     }
