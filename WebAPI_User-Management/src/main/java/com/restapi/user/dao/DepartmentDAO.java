@@ -2,8 +2,10 @@ package com.restapi.user.dao;
 
 
 import com.restapi.user.entity.Department;
+import com.restapi.user.entity.User;
 import com.restapi.user.model.DeppartmentModel;
 import com.restapi.user.repository.DepartmentRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,16 @@ public class DepartmentDAO {
 
     public Department createDepartment(Department department) {
         return this.departmentRepository.saveAndFlush(department);
+    }
+
+    public Department updateDepart(int id, Department department) {
+        Department exitDepart = this.departmentRepository.getOne(id);
+        BeanUtils.copyProperties(department, exitDepart, "id");
+        return this.departmentRepository.saveAndFlush(exitDepart);
+    }
+
+    public void deleteDepart(int id) {
+        this.departmentRepository.deleteById(id);
     }
 
 }

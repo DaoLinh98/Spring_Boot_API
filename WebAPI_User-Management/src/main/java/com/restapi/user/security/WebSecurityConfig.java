@@ -46,19 +46,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui/index.html/**",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
     @Override
     protected void configure(HttpSecurity hhttp) throws Exception{
         hhttp.cors()//ngan res tu domain khac
                 .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/v1/users/**").permitAll()
                 .antMatchers("/api/v1/departments/**").permitAll()
                 .antMatchers("/api/v1/assets/**").permitAll()
                 .antMatchers("/api/v1/assignments/**").permitAll()
-
                 .anyRequest().authenticated();
-
         //them filter kiem tra jwt
         hhttp.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
