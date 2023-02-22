@@ -33,5 +33,16 @@ public class DepartmentController {
         return this.departmentService.createDepartment(department);
     }
 
+    @PutMapping("{id}")
+    public Department updateDepart(@PathVariable Integer id, @RequestBody Department department) {
+        return this.departmentService.updateDepart(id, department);
+    }
+    @DeleteMapping("{id}")
+    public Void deleteDepart(@PathVariable Integer id) {
+        this.departmentService.deleteDepart(id);
+        return null;
+    }
+
+
 
 }

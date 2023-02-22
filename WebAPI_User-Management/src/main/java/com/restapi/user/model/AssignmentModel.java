@@ -4,8 +4,11 @@ import com.restapi.user.entity.Asset;
 import com.restapi.user.entity.User;
 
 public class AssignmentModel {
-    int id;
-    String status;
-    User user;
-    Asset asset;
+
+    public int id;
+    public String status;
+    public int user_id;
+    public int asset_id;
+
+
 }

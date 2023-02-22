@@ -35,8 +35,8 @@ public class Assignment implements Serializable {
     public Assignment(int id, String status, User user, Asset asset) {
         this.id = id;
         this.status = status;
-       this.user = user;
-       this.asset = asset;
+        this.user = user;
+        this.asset = asset;
     }
 
     public int getId() {

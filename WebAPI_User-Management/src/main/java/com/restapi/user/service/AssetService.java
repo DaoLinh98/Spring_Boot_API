@@ -19,11 +19,18 @@ public class AssetService {
     @Autowired
     private AssetDAO assetDAO;
 
-    public AssetModel getById(int id) {
-        return this.assetDAO.getById(id);
+    public List<Asset> getAll() {
+        return this.assetDAO.getAll();
     }
-    public Asset createAsset(Asset asset) {
-        return this.assetDAO.createAsset(asset);
+    public void createAsset(AssetModel assetModel) {
+      assetDAO.createAsset(assetModel);
     }
 
+
+    public Asset updateAsset(int id, Asset asset) {
+        return this.assetDAO.updateAsset(id, asset);
+    }
+    public void deleteAsset(int id) {
+        this.assetDAO.deleteAsset(id);
+    }
 }
