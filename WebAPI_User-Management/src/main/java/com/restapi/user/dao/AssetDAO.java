@@ -22,19 +22,22 @@ public class AssetDAO {
     private DepartmentRepository departmentRepository;
     @Autowired
     private UserRepository userRepository;
+
     public List<Asset> getAll() {
-     return assetRepository.findAll();
-    }
-    public Asset createAsset(Asset asset) {
-        return this.assetRepository.saveAndFlush(asset);
+        return assetRepository.findAll();
     }
 
+    public void createAsset(AssetModel assetModel) {
+
+        Asset asset = new Asset();
+        asset.setAssetName(assetModel.assetsName);
+        assetRepository.save(asset);
+    }
     public Asset updateAsset(int id, Asset asset) {
         Asset exitAsset = this.assetRepository.getOne(id);
         BeanUtils.copyProperties(asset, exitAsset, "id");
         return this.assetRepository.saveAndFlush(exitAsset);
     }
-
     public void deleteAsset(int id) {
         this.assetRepository.deleteById(id);
     }

@@ -19,8 +19,8 @@ public class AssetController {
        return this.assetService.getAll();
     }
     @PostMapping()
-    public Asset createAsset(@RequestBody Asset asset) {
-        return this.assetService.createAsset(asset);
+    public void createAsset(@RequestBody AssetModel assetModel) {
+        assetService.createAsset(assetModel);
     }
 
     @PutMapping("{id}")

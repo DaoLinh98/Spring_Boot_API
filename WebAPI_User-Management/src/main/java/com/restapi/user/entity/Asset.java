@@ -22,6 +22,9 @@ public class Asset {
     @Column(name = "asset_name", length = 50)
     private String assetName;
 
+    public Asset(String assetName) {
+        this.assetName = assetName;
+    }
     public int getId() {
         return id;
     }
@@ -37,4 +40,5 @@ public class Asset {
     public void setAssetName(String assetName) {
         this.assetName = assetName;
     }
+
 }

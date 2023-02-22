@@ -22,8 +22,8 @@ public class AssetService {
     public List<Asset> getAll() {
         return this.assetDAO.getAll();
     }
-    public Asset createAsset(Asset asset) {
-        return this.assetDAO.createAsset(asset);
+    public void createAsset(AssetModel assetModel) {
+      assetDAO.createAsset(assetModel);
     }
 
 

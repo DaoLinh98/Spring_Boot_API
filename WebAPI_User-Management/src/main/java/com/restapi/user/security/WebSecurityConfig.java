@@ -44,8 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
+
     }
 
+//last swagger ui
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
             "/swagger-ui/index.html/**",
@@ -56,19 +58,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity hhttp) throws Exception{
+
         hhttp.cors()//ngan res tu domain khac
                 .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
+                //for swagger ui
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/v1/users/**").permitAll()
                 .antMatchers("/api/v1/departments/**").permitAll()
                 .antMatchers("/api/v1/assets/**").permitAll()
                 .antMatchers("/api/v1/assignments/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest()
+                .authenticated();
         //them filter kiem tra jwt
         hhttp.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 }
 
