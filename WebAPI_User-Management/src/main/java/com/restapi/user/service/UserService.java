@@ -3,6 +3,8 @@ package com.restapi.user.service;
 import com.restapi.user.dao.UserDAO;
 import com.restapi.user.entity.Department;
 import com.restapi.user.entity.User;
+import com.restapi.user.modelRequest.UserRequest;
+import com.restapi.user.modelResponse.UserResponse;
 import com.restapi.user.repository.DepartmentRepository;
 import com.restapi.user.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
@@ -21,26 +23,26 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserDAO userDAO;
-    public List<User> getAll() {
+    public List<UserResponse> getAll() {
         return this.userDAO.getAll();
     }
-    public User getById(int id) {
+    public UserResponse getById(int id) {
         return this.userDAO.getById(id);
     }
-    public User createUesr(User user) {
+    public void createUesr(UserRequest request) {
 
-        return this.userDAO.createUesr(user);
+        this.userDAO.createUesr(request);
     }
-    public User updateUser(int id, User user) {
-        return this.userDAO.updateUser(id, user);
+    public void updateUser(int id, UserRequest request) {
+        this.userDAO.updateUser(id, request);
     }
     public void deleteUser(int id) {
         this.userDAO.deleteUser(id);
     }
-    // order by 'published' column - ascending
-    public List<User> pagingAndSortUser(Integer pageNo, Integer pageSize, String[] sortingParams)
+//    // order by 'published' column - ascending
+    public List<UserResponse> pagingAndSortUser(Integer pageNo, Integer pageSize, String[] sortingParams, String  sortOrder)
     {
-        return this.userDAO.pagingAndSortUser(pageNo, pageSize, sortingParams);
+        return this.userDAO.pagingAndSortUser(pageNo, pageSize, sortingParams, sortOrder);
     }
 
 }

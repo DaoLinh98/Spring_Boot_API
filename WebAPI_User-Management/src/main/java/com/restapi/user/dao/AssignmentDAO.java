@@ -1,11 +1,12 @@
 package com.restapi.user.dao;
 
 import com.restapi.user.entity.*;
-import com.restapi.user.model.AssignmentModel;
+import com.restapi.user.modelResponse.AssetResponse;
+import com.restapi.user.modelResponse.AssignmentResponse;
+import com.restapi.user.modelResponse.UserResponse;
 import com.restapi.user.repository.AssetRepository;
 import com.restapi.user.repository.AssignmentRepository;
 import com.restapi.user.repository.UserRepository;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +23,22 @@ public class AssignmentDAO {
     @Autowired
     private AssetRepository assetRepository;
 
-    public Optional<Assignment> getById(AssignmentPK assignmentPK) {
-        return this.assignmentRepository.findById(assignmentPK);
-    }
-
-    public List<AssignmentModel> getAll() {
-        List<AssignmentModel> assignmentModels = new ArrayList<AssignmentModel>();
-        List<Assignment> assignments = this.assignmentRepository.findAll();
-        for (Assignment assignment : assignments)
-        {
-            AssignmentModel assignmentModel = new AssignmentModel();
-            assignmentModel.id = assignment.getId();
-            assignmentModel.status= assignment.getStatus();
-            assignmentModel.asset_id = assignment.getAsset().getId();
-            assignmentModel.user_id = assignment.getUser().getId();
-            assignmentModels.add(assignmentModel);
-        }
-        return assignmentModels;
-    }
+   public AssetResponse findAssetByIdWithUsers(int asset_id){
+       List<Assignment> a = this.assignmentRepository.findAssetByIdWithUsers(asset_id);
+       AssetResponse assetResponse = new AssetResponse();
+       assetResponse.setId(a.get(0).getAsset().getId());
+       assetResponse.setAssetName(a.get(0).getAsset().getAssetName());
+       List<UserResponse> listUserResponse = new ArrayList();
+     for (Assignment ag :a){
+         UserResponse userResponse = new UserResponse();
+         userResponse.setUserName(ag.getUser().getUserName());
+         userResponse.setDepartment_id(ag.getUser().getDepartment().getId());
+         userResponse.setPassWord(ag.getUser().getPassWord());
+         userResponse.setDateOfBirth(ag.getUser().getDayOfBirth());
+         userResponse.setId(ag.getUser().getId());
+         listUserResponse.add(userResponse);
+     }
+       assetResponse.setUserResponses(listUserResponse);
+       return assetResponse;
+   }
 }

@@ -1,17 +1,15 @@
 package com.restapi.user.dao;
-
-
 import com.restapi.user.entity.Department;
 import com.restapi.user.entity.User;
-import com.restapi.user.model.DeppartmentModel;
+import com.restapi.user.modelRequest.DepartmentRequest;
+import com.restapi.user.modelResponse.DepartmentResponse;
+import com.restapi.user.modelResponse.UserResponse;
 import com.restapi.user.repository.DepartmentRepository;
-import org.springframework.beans.BeanUtils;
+import com.restapi.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
 public class DepartmentDAO {
 
@@ -20,38 +18,39 @@ public class DepartmentDAO {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<Department> getAll() {
-        return this.departmentRepository.findAll();
+    public void createDepartment(DepartmentRequest request) {
+        Department department = new Department();
+        department.setDepartmentName(request.getDepartmentName());
+        departmentRepository.save(department);
     }
 
-    public List<DeppartmentModel> getAllWithUsers() {
-        List<Department> departments = this.departmentRepository.findAll();
-        List<DeppartmentModel> deppartmentModels = new ArrayList<DeppartmentModel>();
-
+    public List<DepartmentResponse> getAll() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepartmentResponse> departmentResponses = new ArrayList<>();
         for (Department department : departments) {
-            DeppartmentModel deppartmentModel = new DeppartmentModel();
-            int id = department.getId();
-            deppartmentModel.id = department.getId();
-            deppartmentModel.departmentName = department.getDepartmentName();
-            deppartmentModel.users = userDAO.getUsersByDepartment_Id(id) ;
-            deppartmentModels.add(deppartmentModel);
+            DepartmentResponse departmentResponse = new DepartmentResponse();
+            departmentResponse.setDepartmentName(department.getDepartmentName());
+            departmentResponse.setId(department.getId());
+            List<User> users = userRepository.findUsersByDepartment_Id(department.getId());
+            List<UserResponse> userResponses = new ArrayList<>();
+            for (User user : users) {
+                UserResponse userResponse = new UserResponse();
+                userResponse.setId(user.getId());
+                userResponse.setUserName(user.getUserName());
+                userResponse.setPassWord(user.getPassWord());
+                userResponse.setFullName(user.getFullName());
+                userResponse.setDateOfBirth(user.getDayOfBirth());
+                userResponse.setDepartment_id(user.getDepartment().getId());
+
+                userResponses.add(userResponse);
+            }
+            departmentResponse.setUsers(userResponses);
+            departmentResponses.add(departmentResponse);
         }
-        return deppartmentModels;
-    }
-
-    public Department createDepartment(Department department) {
-        return this.departmentRepository.saveAndFlush(department);
-    }
-
-    public Department updateDepart(int id, Department department) {
-        Department exitDepart = this.departmentRepository.getOne(id);
-        BeanUtils.copyProperties(department, exitDepart, "id");
-        return this.departmentRepository.saveAndFlush(exitDepart);
-    }
-
-    public void deleteDepart(int id) {
-        this.departmentRepository.deleteById(id);
+        return departmentResponses;
     }
 
 }

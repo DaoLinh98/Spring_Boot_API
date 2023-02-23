@@ -2,6 +2,8 @@ package com.restapi.user.controller;
 
 import com.restapi.user.entity.Department;
 import com.restapi.user.entity.User;
+import com.restapi.user.modelRequest.UserRequest;
+import com.restapi.user.modelResponse.UserResponse;
 import com.restapi.user.repository.DepartmentRepository;
 import com.restapi.user.repository.UserRepository;
 import com.restapi.user.service.UserService;
@@ -36,44 +38,46 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping()
-     public List<User> getAll() {
+    public ResponseEntity<List<UserResponse>> getAll() {
 
-        return userService.getAll();
+        List<UserResponse> userResponses = userService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(userResponses);
     }
+
     @GetMapping("/sort")
-    public ResponseEntity<List<User>> pagingAndSortUser(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "3") Integer pageSize,
-            @RequestParam(defaultValue = "id, asc") String[] sortingParams
+    public ResponseEntity<List<UserResponse>> pagingAndSortUser(
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "2") int pageSize,
+            @RequestParam(value = "sort", defaultValue = "userName") String[] sortingParams,
+            @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder
+    ) {
+        List<UserResponse> users = userService.pagingAndSortUser(pageNo, pageSize, sortingParams, sortOrder);
 
-    )
-
-    {
-        List<User> list = userService.pagingAndSortUser(pageNo, pageSize, sortingParams);
-
-        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
-
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MODERATOR') ")
-    public User getById(@PathVariable Integer id) {
-       return  this.userService.getById(id);
+    // @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MODERATOR') ")
+    public ResponseEntity<UserResponse> getById(@PathVariable Integer id) {
+        UserResponse userResponse = this.userService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
     @PostMapping()
-        public User createUesr(@RequestBody User user) {
-        return userService.createUesr(user);
+    public ResponseEntity<String> createUesr(@RequestBody UserRequest request) {
+        this.userService.createUesr(request);
+        return ResponseEntity.status(HttpStatus.OK).body("Insert Success!");
     }
-
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return this.userService.updateUser(id, user);
+    public ResponseEntity<String> updateUser(@PathVariable Integer id, @RequestBody UserRequest request) {
+        this.userService.updateUser(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body("Updated Data!");
     }
+
     @DeleteMapping("{id}")
-    public Void deleteUser(@PathVariable Integer id) {
-         this.userService.deleteUser(id);
-         return null;
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        this.userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted Data!");
     }
 }

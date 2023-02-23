@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name="assignments")
 @Data
-@IdClass(AssignmentPK.class)
+@IdClass(AssignmentKey.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor

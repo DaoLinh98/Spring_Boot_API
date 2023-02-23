@@ -1,10 +1,12 @@
 package com.restapi.user.controller;
 
 import com.restapi.user.entity.Asset;
-import com.restapi.user.entity.User;
-import com.restapi.user.model.AssetModel;
+import com.restapi.user.modelRequest.AssetRequest;
+import com.restapi.user.modelResponse.AssetAllResponse;
 import com.restapi.user.service.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,23 +16,29 @@ import java.util.List;
 public class AssetController {
     @Autowired
     private AssetService assetService;
+
     @GetMapping()
-    public List<Asset> getAll() {
-       return this.assetService.getAll();
+    public ResponseEntity<List<AssetAllResponse>> getAll() {
+        List<AssetAllResponse> assetAllResponses = this.assetService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(assetAllResponses);
     }
+
     @PostMapping()
-    public void createAsset(@RequestBody AssetModel assetModel) {
-        assetService.createAsset(assetModel);
+    public ResponseEntity<String> createAsset(@RequestBody AssetRequest request) {
+        this.assetService.createAsset(request);
+        return ResponseEntity.status(HttpStatus.OK).body("Insert Success!");
     }
 
     @PutMapping("{id}")
-    public Asset updateAsset(@PathVariable Integer id, @RequestBody Asset asset) {
-        return this.assetService.updateAsset(id, asset);
+    public ResponseEntity<Asset> updateAsset(@PathVariable Integer id, @RequestBody AssetRequest request) {
+        Asset asset = this.assetService.updateAsset(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(asset);
     }
+
     @DeleteMapping("{id}")
-    public Void deleteAsset(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteAsset(@PathVariable Integer id) {
         this.assetService.deleteAsset(id);
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted!");
     }
 
 }
