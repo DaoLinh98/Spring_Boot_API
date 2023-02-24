@@ -8,37 +8,33 @@ import com.restapi.user.repository.DepartmentRepository;
 import com.restapi.user.repository.UserRepository;
 import com.restapi.user.service.UserService;
 import lombok.ToString;
-import org.springframework.beans.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.criteria.Order;
-import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api/v1/users")
 @ToString()
-
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
     private UserRepository userRepository;
+    // creating a logger
 
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAll() {
+        // Logging various log level messages
+        logger.info("Getting item with id ");
 
         List<UserResponse> userResponses = userService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(userResponses);
@@ -57,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    // @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MODERATOR') ")
+    @PreAuthorize(" hasRole('ADMIN')")
     public ResponseEntity<UserResponse> getById(@PathVariable Integer id) {
         UserResponse userResponse = this.userService.getById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
