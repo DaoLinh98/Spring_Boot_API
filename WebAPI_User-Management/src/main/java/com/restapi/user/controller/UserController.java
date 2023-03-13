@@ -2,78 +2,78 @@ package com.restapi.user.controller;
 
 import com.restapi.user.entity.Department;
 import com.restapi.user.entity.User;
+import com.restapi.user.modelRequest.UserRequest;
+import com.restapi.user.modelResponse.UserResponse;
 import com.restapi.user.repository.DepartmentRepository;
 import com.restapi.user.repository.UserRepository;
 import com.restapi.user.service.UserService;
 import lombok.ToString;
-import org.springframework.beans.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.criteria.Order;
-import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api/v1/users")
 @ToString()
-
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
     private UserRepository userRepository;
+    // creating a logger
 
     @GetMapping()
-     public List<User> getAll() {
+    public ResponseEntity<List<UserResponse>> getAll() {
+        // Logging various log level messages
+        logger.info("Getting item with id ");
 
-        return userService.getAll();
+        List<UserResponse> userResponses = userService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(userResponses);
     }
+
     @GetMapping("/sort")
-    public ResponseEntity<List<User>> pagingAndSortUser(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "3") Integer pageSize,
-            @RequestParam(defaultValue = "id, asc") String[] sortingParams
+    public ResponseEntity<List<UserResponse>> pagingAndSortUser(
+            @RequestParam(value = "page", defaultValue = "1") int pageNo,
+            @RequestParam(value = "size", defaultValue = "2") int pageSize,
+            @RequestParam(value = "sort", defaultValue = "userName") String[] sortingParams,
+            @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder
+    ) {
+        List<UserResponse> users = userService.pagingAndSortUser(pageNo, pageSize, sortingParams, sortOrder);
 
-    )
-
-    {
-        List<User> list = userService.pagingAndSortUser(pageNo, pageSize, sortingParams);
-
-        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
-
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MODERATOR') ")
-    public User getById(@PathVariable Integer id) {
-       return  this.userService.getById(id);
+    @PreAuthorize(" hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> getById(@PathVariable Integer id) {
+        UserResponse userResponse = this.userService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
     @PostMapping()
-        public User createUesr(@RequestBody User user) {
-        return userService.createUesr(user);
+    public ResponseEntity<String> createUesr(@RequestBody UserRequest request) {
+        this.userService.createUesr(request);
+        return ResponseEntity.status(HttpStatus.OK).body("Insert Success!");
     }
-
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return this.userService.updateUser(id, user);
+    public ResponseEntity<String> updateUser(@PathVariable Integer id, @RequestBody UserRequest request) {
+        this.userService.updateUser(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body("Updated Data!");
     }
+
     @DeleteMapping("{id}")
-    public Void deleteUser(@PathVariable Integer id) {
-         this.userService.deleteUser(id);
-         return null;
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        this.userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted Data!");
     }
 }

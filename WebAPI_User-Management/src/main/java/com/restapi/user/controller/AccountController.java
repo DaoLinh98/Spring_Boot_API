@@ -44,7 +44,6 @@ public class AccountController {
         if(accountService.exitsByUserName(request.getUserName().toString())){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: is already"));
         }
-
         Account account = new Account();
         account.setUserName(request.getUserName());
         account.setPassWord(passwordEncoder.encode(request.getPassWord()));
@@ -75,6 +74,16 @@ public class AccountController {
                                 .orElseThrow(()->new RuntimeException("role is not found"));
                         listRole.add(userRole);
                         break;
+                    case "":
+                        Role emptyRole = roleService.findByRoleName(ERole.ROLE_USER)
+                                .orElseThrow(()->new RuntimeException("role is not found"));
+                        listRole.add(emptyRole);
+                        break;
+                    default:
+                        Role defaultRole = roleService.findByRoleName(ERole.ROLE_USER)
+                                .orElseThrow(()->new RuntimeException("role is not found"));
+                        listRole.add(defaultRole);
+                        break;
                 }
 
             });
@@ -98,6 +107,4 @@ public class AccountController {
         return ResponseEntity.ok(new JwtResponse(jwt,customUserDetail.getUserId(),customUserDetail.getUsername(),
                 listRole));
     }
-
-
 }

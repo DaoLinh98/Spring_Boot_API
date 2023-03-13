@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="assets")
-@Data
+@Table(name = "assets")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,12 +20,23 @@ public class Asset {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
     @Column(name = "asset_name", length = 50)
     private String assetName;
+    @OneToMany(mappedBy = "asset")
+    private List<Assignment> assignments;
 
     public Asset(String assetName) {
         this.assetName = assetName;
     }
+
     public int getId() {
         return id;
     }

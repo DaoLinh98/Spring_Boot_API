@@ -2,12 +2,8 @@ package com.restapi.user.service;
 
 import com.restapi.user.dao.AssetDAO;
 import com.restapi.user.entity.Asset;
-import com.restapi.user.entity.Department;
-import com.restapi.user.entity.User;
-import com.restapi.user.model.AssetModel;
-import com.restapi.user.repository.AssetRepository;
-import com.restapi.user.repository.DepartmentRepository;
-import com.restapi.user.repository.UserRepository;
+import com.restapi.user.modelRequest.AssetRequest;
+import com.restapi.user.modelResponse.AssetAllResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +11,17 @@ import java.util.List;
 
 @Service
 public class AssetService {
-
     @Autowired
     private AssetDAO assetDAO;
 
-    public List<Asset> getAll() {
+    public List<AssetAllResponse> getAll() {
         return this.assetDAO.getAll();
     }
-    public void createAsset(AssetModel assetModel) {
-      assetDAO.createAsset(assetModel);
+    public void createAsset(AssetRequest request) {
+      assetDAO.createAsset(request);
     }
-
-
-    public Asset updateAsset(int id, Asset asset) {
-        return this.assetDAO.updateAsset(id, asset);
+    public Asset updateAsset(int id, AssetRequest request) {
+        return this.assetDAO.updateAsset(id, request);
     }
     public void deleteAsset(int id) {
         this.assetDAO.deleteAsset(id);

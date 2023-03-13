@@ -10,18 +10,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
 @Table(name="users")
-@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-
-
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +39,17 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id",nullable = false,referencedColumnName = "department_id")
     private Department department;
+
+    @OneToMany(mappedBy = "user")
+    private List<Assignment> assignments;
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
 
     public int getId() {
         return id;
@@ -96,5 +106,4 @@ public class User {
         this.dayOfBirth = dayOfBirth;
         this.department = department;
     }
-
 }
